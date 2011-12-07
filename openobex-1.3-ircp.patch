@@ -1,0 +1,30 @@
+diff -druN openobex-1.3/ircp/ircp_io.c openobex-1.3_ircp_io/ircp/ircp_io.c
+--- openobex-1.3/ircp/ircp_io.c	2006-01-18 15:02:14.000000000 +0200
++++ openobex-1.3_ircp_io/ircp/ircp_io.c	2008-06-14 11:25:53.000000000 +0300
+@@ -127,8 +127,11 @@
+ 		return -1;
+ 
+ 	//TODO! Rename file if already exist.
+-
+-	snprintf(diskname, MAXPATHLEN, "%s/%s", path, name);
++	if (strnlen(path,MAXPATHLEN)!=0) {
++		snprintf(diskname, MAXPATHLEN, "%s/%s", path, name);
++	} else {
++		strncpy(diskname, name, MAXPATHLEN);
++	}
+ 
+ 	DEBUG(4, "Creating file %s\n", diskname);
+ 
+@@ -150,7 +153,11 @@
+ 			return -1;
+ 	}
+ 
+-	snprintf(newpath, MAXPATHLEN, "%s/%s", path, dir);
++	if (strnlen(path,MAXPATHLEN)!=0) {
++		snprintf(newpath, MAXPATHLEN, "%s/%s", path, dir);
++	} else {
++		strncpy(newpath, dir, MAXPATHLEN);
++	}
+ 
+ 	DEBUG(4, "path = %s dir = %s, flags = %d\n", path, dir, flags);
+ 	if(stat(newpath, &statbuf) == 0) {
